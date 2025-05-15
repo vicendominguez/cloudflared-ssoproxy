@@ -38,6 +38,7 @@ const (
 	sshGenCertFlag     = "short-lived-cert"
 	sshConnectTo       = "connect-to"
 	sshDebugStream     = "debug-stream"
+	httpProxyFlag      = "http"
 	sshConfigTemplate  = `
 Add to your {{.Home}}/.ssh/config:
 
@@ -203,6 +204,57 @@ func Commands() []*cli.Command {
 							Name:   sshDebugStream,
 							Hidden: true,
 							Usage:  "Writes up-to the max provided stream payloads to the logger as debug statements.",
+						},
+					},
+				},
+				{
+					Name:        "http",
+					Action:      cliutil.Action(httpProxy),
+					Usage:       "http --hostname destination_http_server --url localhost:8080",
+					ArgsUsage:   "",
+					Description: `The http subcommand creates a local HTTP proxy that adds authentication tokens to requests sent to Access protected applications.`,
+					Flags: []cli.Flag{
+						&cli.StringFlag{
+							Name:    sshHostnameFlag,
+							Aliases: []string{"tunnel-host", "T"},
+							Usage:   "specify the hostname of your Access protected application.",
+							EnvVars: []string{"TUNNEL_SERVICE_HOSTNAME"},
+						},
+						&cli.StringFlag{
+							Name:    sshURLFlag,
+							Aliases: []string{"listener", "L"},
+							Usage:   "specify the local host:port to listen for HTTP requests (e.g., localhost:8080).",
+							EnvVars: []string{"TUNNEL_SERVICE_URL"},
+						},
+						&cli.StringSliceFlag{
+							Name:    sshHeaderFlag,
+							Aliases: []string{"H"},
+							Usage:   "specify additional headers you wish to send to the Access application.",
+						},
+						&cli.StringFlag{
+							Name:    sshTokenIDFlag,
+							Aliases: []string{"id"},
+							Usage:   "specify an Access service token ID you wish to use.",
+							EnvVars: []string{"TUNNEL_SERVICE_TOKEN_ID"},
+						},
+						&cli.StringFlag{
+							Name:    sshTokenSecretFlag,
+							Aliases: []string{"secret"},
+							Usage:   "specify an Access service token secret you wish to use.",
+							EnvVars: []string{"TUNNEL_SERVICE_TOKEN_SECRET"},
+						},
+						&cli.StringFlag{
+							Name:  cfdflags.LogFile,
+							Usage: "Save application log to this file for reporting issues.",
+						},
+						&cli.StringFlag{
+							Name:  cfdflags.LogDirectory,
+							Usage: "Save application log to this directory for reporting issues.",
+						},
+						&cli.StringFlag{
+							Name:    cfdflags.LogLevelSSH,
+							Aliases: []string{"loglevel"},
+							Usage:   "Application logging level {debug, info, warn, error, fatal}. ",
 						},
 					},
 				},

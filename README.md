@@ -1,3 +1,15 @@
+# This fork
+
+I added a feature to the original code:
+
+```
+cloudflared access http --hostname gitlab.company.tech --url http://127.0.0.1:8888
+```
+ * `127.0.0.1:8888` - As a new portal with the sso token header added
+ * `127.0.0.1:8888` - As a a proxy server (curl -x 127.0.0.1:8888 url) - ssl and http2 not well supported.
+
+Example: i am using it to access to my gitlab instance behind a cloudflare sso and use a MCP to the gitlab API.
+
 # Cloudflare Tunnel client
 
 Contains the command-line client for Cloudflare Tunnel, a tunneling daemon that proxies traffic from the Cloudflare network to your origins.
